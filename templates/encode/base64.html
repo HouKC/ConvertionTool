@@ -1,0 +1,15 @@
+{% extends ../base.html %}
+{% block content %}
+
+<form class="base64" action="{% url 'encode:base64' %}">
+    {% csrf_token %}
+    {% if context %}
+        <input type="text" width="600px" height="400px" aria-colcount="80" aria-rowcount="10" value="string" name="string">
+        <button type="submit">Base64编码</button>
+        <input type="text" width="600px" height="400px" aria-colcount="80" aria-rowcount="10" value="context" name="context">
+    {% else %}
+        <input type="text" width="600px" height="400px" aria-colcount="80" aria-rowcount="10" name="string">
+    {% endif %}
+</form>
+
+{% endblock %}
