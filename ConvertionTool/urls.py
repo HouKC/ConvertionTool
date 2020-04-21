@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('encode/', include('encode.urls')),
+    path('', include('core.urls')),
 ]
