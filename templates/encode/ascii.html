@@ -8,9 +8,9 @@
     <div style="color:red;">{{ message }}</div>
     {% endif %}
     <br />
-    <button type="submit" formaction="{% url 'encode:ascii_encode' %}">ascii编码</button>
+    <button type="submit" formaction="{% url 'encode:ascii_encode' %}">中文转&#xxxx</button>
     &nbsp;
-    <button type="submit" formaction="{% url 'encode:ascii_decode' %}">ascii解码</button>
+    <button type="submit" formaction="{% url 'encode:ascii_decode' %}">ascii转中文</button>
     <br />
     &nbsp;
     <button type="button"><a href="{% url 'core:index' %}">返回首页</a></button>

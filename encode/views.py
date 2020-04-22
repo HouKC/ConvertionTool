@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import JsonResponse
 import base64
-
 
 # Create your views here.
 def base64_view(request):
@@ -44,3 +46,13 @@ def ascii_view(request):
         return render(request, 'encode/ascii.html', locals())
     else:
         return render(request, 'encode/ascii.html')
+
+
+class UnicodeView(APIView):
+    def get(self, request):
+        return render(request, 'encode/unicode.html')
+
+    def post(self, request):
+        print(request.data)
+        data = {"context": '你好'}
+        return JsonResponse(data)

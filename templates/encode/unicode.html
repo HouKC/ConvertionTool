@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'encode/js/jquery-2.2.1.min.js' %}"></script>
+<script>
+function ChangeCode(e){
+    $.ajax({
+        type: "POST",
+        async: false,        //异步执行
+        url: "{% url 'encode:unicode' %}",   //请求链接
+        data: {
+            "csrfmiddlewaretoken": "{{ csrf_token }}",    //设置ajax csrf认证
+            "encode_method": $(e).val(),
+            "string": $(".string").val(),
+        },           //请求带上的数据
+        dataType: "json",   //json类型
+        success: function(result){
+            var result = JSON.stringify(result);    //需解析，否则返回object
+            console.log(result)
+            console.log(this.value)
+        },
+        error: function(errmsg){
+            console.log("Ajax获取服务器数据出错了！" + errmsg)
+        }
+    })
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<textarea class="string" name="string" cols="80" rows="20">{{ string }}</textarea>
+{% if message %}
+<div style="color:red;">{{ message }}</div>
+{% endif %}
+<br />
+<input type="button"  value="中文 转 Unicode" name="button1" onclick="ChangeCode(this)">
+<input type="button" value="Unicode 转 中文" name="button2" onclick="ChangeCode(this)">
+<input type="button" value="Unicode 转 ASCII" name="button3" onclick="ChangeCode(this)">
+<input type="button" value="ASCII 转 Unicode" name="button4" onclick="ChangeCode(this)">
+<input type="button" value="中文 转 &#XXXX" name="button5" onclick="ChangeCode(this)">
+<br />
+<textarea class="context" name="context" cols="80" rows="20">{{ context }}</textarea>
+{% endblock %}
