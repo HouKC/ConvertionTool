@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'encode/js/jquery-2.2.1.min.js' %}"></script>
+<script>
+function ChangeCode(e){
+    $.ajax({
+        type: "POST",
+        async: false,        //异步执行
+        url: "{% url 'encode:unicode' %}",   //请求链接
+        data: {
+            "csrfmiddlewaretoken": "{{ csrf_token }}",    //设置ajax csrf认证
+            "encode_method": $(e).val(),
+            "string": $(".string").val(),
+        },           //请求带上的数据
+        dataType: "json",   //json类型
+        success: function(result){
+            if(result["status"] == "200"){
+                $(".context").empty();
+                $(".context").html(result["context"]);
+                $(".message").css('display', 'None');
+            }else{
+                $(".message").css('display', 'block');
+                //console.log("输入内容格式错误！请检查输入内容！")
+            }
+        },
+        error: function(errmsg){
+            //console.log("输入内容格式错误！请检查输入内容！" + errmsg)
+            $(".message").css('display');
+        }
+    })
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    <textarea class="string" name="string" cols="80" rows="20">{{ string }}</textarea>
+    <div class="message" style="color:red;display: None;">输入内容格式错误！请检查输入内容！</div>
+    {% for key, value in method_dict.items %}
+        <br />
+        <strong>{{ key }}: </strong>
+        {% for method in value %}
+            <input type="button"  value="{{ method }}" name="button{{ forloop.counter }}" onclick="ChangeCode(this)">
+        {% endfor %}
+    {% endfor %}
+    <button type="button"><a href="{% url 'core:index' %}">返回首页</a></button>
+    <br />
+    <textarea class="context" name="context" cols="80" rows="20">{{ context }}</textarea>
+{% endblock %}
